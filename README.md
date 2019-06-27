@@ -17,7 +17,7 @@ You can register for a free serverless COBOL trial, using this [registration pag
 Our helpdesk team will provide the required resources to get you started compiling your COBOL code and deploy it to an AWS lambda function, on a region nearby your location.
 
 Meanwhile, you can browse the documentation:
-- COBOL compiler user guide
+- [COBOL compiler user guide](./VSCodeCompilerForCOBOL-UserGuide.md)
 - COBOL extensions for AWS - programming guide
 - sample COBOL programs 
 
