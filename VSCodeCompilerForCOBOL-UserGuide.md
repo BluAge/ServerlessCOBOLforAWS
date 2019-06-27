@@ -150,7 +150,7 @@ Shoud compilation issues be raised, please check the entries in the PROBLEMS vie
 ## 3. File creation
   Create a new file, in that folder, named GETENV.cbl:
 
-![creating a new cobol file](./images/VSCode_create_new_cobol_file.png)
+![creating a new cobol file](./images/VSCODE_create_new_cobol_file.png)
 
 ## 4. File contents editing 
   Fill the contents of the editor with the following code:
@@ -238,7 +238,7 @@ ______________________________________________
 
 In the EXPLORER view, the target folder should contain a jar named tutorial-service-1.0.0.jar:
 
-![compiled cobol file](./images/VSCode_Tutorial_jar.png)
+![compiled cobol file](./images/VSCode_tutorial_jar.png)
 
 Now that the ServerLess COBOL function code as been compiled, it is time to deploy it.
 
