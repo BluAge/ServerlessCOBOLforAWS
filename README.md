@@ -8,7 +8,7 @@ For the first time, COBOL developers were able to compile and deploy their code 
 
 During the first quarter of 2019, we wrote dedicated extensions to permit the COBOL code to interact with popular AWS services ([SQS](https://aws.amazon.com/sqs/?nc2=h_m1), [S3](https://aws.amazon.com/s3/?nc2=h_m1), [Kinesis](https://aws.amazon.com/kinesis/?nc2=h_m1), [API Gateway](https://aws.amazon.com/api-gateway/?nc2=h_m1), [DynamoDB](https://aws.amazon.com/dynamodb/?nc2=h_m1)) and handle respective triggers for Lambda functions.
 
-At [AWS Summit Tokyo 2019](https://aws.amazon.com/jp/summits/tokyo-2019/), in partnership with [Accenture Japan](https://www.accenture.com/jp-ja), we demonstrated how we managed to migrate a CICS Online COBOL application into a serverless web application, relying on Lambda functions for the backend. 
+At [AWS Summit Tokyo 2019](https://aws.amazon.com/jp/summits/tokyo-2019/), in partnership with [Accenture Japan](https://www.accenture.com/jp-ja), we demonstrated how we managed to migrate a CICS Online COBOL application into a serverless web application, relying on Lambda functions for the backend (see the [video](https://youtu.be/jhB39NlgGl4?t=2806)). 
 
 ## Try for yourself!
 
