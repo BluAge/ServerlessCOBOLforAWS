@@ -1,12 +1,5 @@
-% BluAge ServerLess COBOL - VSCode compiler for Serverless COBOL - User guide
-% rev. 1.0.4
-% (c) BluAge 2019 - All rights reserved.
-
----
-header-includes: <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js" type="text/javascript"></script>
- <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
- <script src="./scripts/serverless-cobol.js" type="text/javascript"></script>
----
+# BluAge ServerLess COBOL - VSCode compiler for Serverless COBOL - User guide
+rev. 1.0.4 - (c) BluAge 2019 - All rights reserved.
 
 Compiling COBOL to be deployed on a serverless environment, typically AWS lambda functions, required making calls to a REST call in the early days (autumn 2018). We had in mind to propose a more user-friendly experience than having to deal with curl commands or postman calls.
 
