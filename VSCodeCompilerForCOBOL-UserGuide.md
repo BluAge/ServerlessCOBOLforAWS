@@ -38,7 +38,7 @@ Check that the VSIX install notification properly shows up:
    
   ![install from VSIX : notification](./images/Visual_Studio_Code_VSIX_install_notification.png)
 
-| <span class="sym">&#x26A0;</span> If upgrading from a previous version of the plugin, the notification message might be different:
+<span class="sym">&#x26A0;</span> If upgrading from a previous version of the plugin, the notification message might be different:
 
    ![install from VSIX : notification - the upgrade case](./images/Visual_Studio_Code_VSIX_install_notification_2.png)
 
@@ -71,7 +71,7 @@ Depending on network conditions, and the size of the uploaded COBOL code, you mi
 
 Default value is 300000 ms (5 minutes). 
 
-| <span class="sym">&#x26A0;</span> Depending on your network configuration, you might need to make some additional setup for proper proxy configuration. Please ask to your local network administrator for required configuration details.
+<span class="sym">&#x26A0;</span> Depending on your network configuration, you might need to make some additional setup for proper proxy configuration. Please ask to your local network administrator for required configuration details.
 
 # Compiling your COBOL
 
@@ -101,7 +101,7 @@ First of all, the plugin will check the syntax of the COBOL sources in the folde
 
   ![parsing failure](./images/Visual_Studio_Code_parsing_failure.png)
 
-| <span class="sym">&#x26A0;</span> Early encountered parsing failures in the code might hide other errors located further on. **Fixing the COBOL syntax errors is an iterative process** that might require several rounds.
+<span class="sym">&#x26A0;</span> Early encountered parsing failures in the code might hide other errors located further on. **Fixing the COBOL syntax errors is an iterative process** that might require several rounds.
 
 Once all errors have been corrected, launching the compilation process will actually send the local code to the compilation server for the compilation from COBOL to java to be effectively achieved.
 
@@ -261,7 +261,7 @@ Click on the "Add a layer" button. A new page will appear. Select the option "Pr
 
 ![set layer ARN](./images/AWS_Lambda_layer_ARN.png)
 
-| <span class="sym">&#x26A0;</span> Depending on region, the version number and/or layer name may vary. The value on the screenshot above is just for illustration purpose, please use the version ARN provided by the BluAge helpdesk team.
+<span class="sym">&#x26A0;</span> Depending on region, the version number and/or layer name may vary. The value on the screenshot above is just for illustration purpose, please use the version ARN provided by the BluAge helpdesk team.
 
 Click on the 'Add' button to get back to the main lambda function UI page.
 
@@ -331,7 +331,7 @@ Scroll down the page to reach the Basic settings zone. Set the memory consumptio
 
 Now that all settings have been done, Scroll up the page and save all pending changes with the 'Save' button. 
 
-| <span class="sym">&#x26A0;</span> Actual saving may take a few seconds as the effective jar code upload will take place at that time, and the upload time may vary depending on network conditions.
+<span class="sym">&#x26A0;</span> Actual saving may take a few seconds as the effective jar code upload will take place at that time, and the upload time may vary depending on network conditions.
 
 The settings have been saved, as indicated by the corresponding icon:
 
@@ -353,7 +353,7 @@ There, click on the 'Test' button.
 
 ![Lambda function: test](./images/AWS_Lambda_test.png)
 
-| <span class="sym">&#x26A0;</span> First run of a freshly deployed lambda function might take some time (generally, a few seconds), due to the well known 'cold start' effect. After the first run, the lambda function will run significantly faster (check figures below).
+<span class="sym">&#x26A0;</span> First run of a freshly deployed lambda function might take some time (generally, a few seconds), due to the well known 'cold start' effect. After the first run, the lambda function will run significantly faster (check figures below).
 
 Inspect the execution result, to make sure the function executed successfully. The log should contain the following lines (of course timestamps will  be different)
 ```
