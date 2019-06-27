@@ -984,7 +984,7 @@ Details on the elementary fields:
     * When the ```queue-url``` is blank, the "SQSOP" program will automatically try to figure out the queue url using the ```queue-name``` field value, and, if successfully retrieved the url,  store the value in the  ```queue-url``` field for further use. When using multiple queues, we advise to cache the queue urls to facilitate switching between target queues.  
 
 * ```aws-region```: the identifier of the AWS region hosting the target queue. This parameter is **mandatory**.
-* ```sqs-max-number-of-messages```: an integer value, between 1 and 10 both  inclusive, to be used for batch reception of messages from a queue, using the 'RCVMMSG' command. All other commands will ignore the value of this field. The 'RCVMMSG4 command will try to receive at most ```sqs-max-number-of-messages``` messages from the queue, using a batch receive request. All received messages are stacked to be pulled later using the 'PULSMSG' command.
+* ```sqs-max-number-of-messages```: an integer value, between 1 and 10 both  inclusive, to be used for batch reception of messages from a queue, using the 'RCVMMSG' command. All other commands will ignore the value of this field. The 'RCVMMSG' command will try to receive at most ```sqs-max-number-of-messages``` messages from the queue, using a batch receive request. All received messages are stacked to be pulled later using the 'PULSMSG' command.
 
 * ```sqs-sent-messages-count```: a read-only positive integer value, whose value will be fed by the "SQSOP" program with the actual number of sent messages of the last 'SNDMMSG' command call.  Its value will always be between 0 and the size of stacked messages to be sent the target queue (that has been fed through previous successive 'STASMSG' command calls).
 
@@ -1560,7 +1560,7 @@ Possible outcomes from the command:
 * An invalid region id was provided; the stack operation is not done and the result status is set to **18**.
 * Pulling a message failed for any other reason; the message I/O area is left untouched and the result status is set to **20**. Please check the logs to find out what caused the operation to fail.
 
-#### The "RCVMMSG" command
+##### The "RCVMMSG" command
 
 This operation makes use of batch receive requests to receive up to 10 messages from a given queue in a single operation. The maximum number of received messages is set using the ```sqs-max-number-of-messages``` field. Received messages are stacked by the "SQSOP" program, using a FIFO strategy, waiting to be pulled by the COBOL client program using the ["PULSMSG"](#the-pulsmsg-command) command.
 
@@ -2130,7 +2130,7 @@ If you're not familiar with AWS API GATEWAY, please consult [https://docs.aws.am
 
 A serverless COBOL lambda function can be triggered by an API GATEWAY **REST** call, provided this one respects a certain convention for specifying the payload to be passed to the program. The payload is mapped to the existing data structures of the ```Linkage Section``` of the entry point COBOL program, to be deployed as a lambda function.
 
-## Expressing the Linkage Section payload
+### Expressing the Linkage Section payload
 
 The payload is a JSON string, that represents an array of arguments (even if the number of arguments is less than 2).
 Each argument represents a data-structure in the ```Linkage Section```. The order is significant (each argument will be mapped to a linkage element, respecting the order the linkage elements are written in the COBOL code) .
@@ -2154,7 +2154,7 @@ The formalism for specifying an argument is as follows:
 
   * ```value```: a value to initialize the corresponding linkage element. This is mandatory for ```"IN"``` and ```"IO"``` arguments, and optional for ```"OUT"``` arguments.
 
-### Alphanumeric type
+#### Alphanumeric type
 
 A characters string with a fixed length;
 
@@ -2199,7 +2199,7 @@ Corresponding linkage element:
 
 &#x26A0; The value does not need to be as long as the defined length. Initializing the linkage element will either pad or truncate to the proper length.
 
-### Packed type
+#### Packed type
 
 A Packed, possibly decimal, number.
 
@@ -2256,7 +2256,7 @@ Corresponding linkage element:
        01 Price PIC S9(5)V99 Packed-Decimal.
 ```
 
-### Binary type
+#### Binary type
 
 A binary-format number.
 
@@ -2317,7 +2317,7 @@ Corresponding linkage element:
        01 Price PIC S9(5)V99 Binary.
 ```
 
-### Zoned type
+#### Zoned type
 
 A zoned-format number.
 
@@ -2374,7 +2374,7 @@ Corresponding linkage element:
        01 Price PIC S9(5)V99.
 ```
 
-### Float type
+#### Float type
 
 A 4-byte (single-precision), always signed, floating-point format number.
 
@@ -2396,7 +2396,7 @@ Corresponding linkage element:
        01 VatRate COMP-1.
 ```
 
-### Double type
+#### Double type
 
 A 8-byte (double-precision) , always signed, floating-point format number.
 
@@ -2418,7 +2418,7 @@ Corresponding linkage element:
        01 Price COMP-2.
 ```
 
-### National type
+#### National type
 
 An utf-16 characters string with a fixed length;
 
@@ -2463,7 +2463,7 @@ Corresponding linkage element:
 01  OutRec  Pic N(70).
 ```
 
-### Record type
+#### Record type
 
 The record type represents a generally complex record, with possibily mixed types and sub data structures. It is possible to valuate the record using a base64 string representation of a byte array.
 
@@ -2506,7 +2506,7 @@ and the elementary field ```WebDomain``` will contain the string
 "http://www.bluage.com                           "
 ```
 
-### The Query Strings
+#### The Query Strings
 
 Passing arguments to a ServerLess COBOL Lambda function requires to valuate the **Query Strings** of the API Gateway method execution by valuating a single parameter named ```args``` with the json representation of the array of arguments.
 
@@ -2572,4 +2572,5 @@ e.g.:
 Then you can test the API Gateway using the 'Test' button and check that the target lambda returned the proper result:
 
   ![sample query strings](./images/API_Gateway_exec_result.png)
-  
+
+Your turn to play!
