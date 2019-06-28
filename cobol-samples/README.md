@@ -4,3 +4,4 @@ Here go the sample COBOL programs, showing basic usages of the AWS extensions:
 * sqs-bulk-sample: demonstrating bulk SQS operations;
 * sqs-sample-event-driven: a COBOL lambda function code that will triggered by a message being sent to a target -- non-fifo -- queue;
 * api-gateway-event-driven: a COBOL lambda function code that will triggered by an API Gateway call;
+* kinesis-sample: demonstrating Kinesis atomic operations in COBOL;
