@@ -7,3 +7,4 @@ Here go the sample COBOL programs, showing basic usages of the AWS extensions:
 * kinesis-sample: demonstrating Kinesis atomic operations in COBOL;
 * dynamodb-sample: demonstrating DynamoDB operations in COBOL;
 * sqs-fifo-sample: demonstrating SQS operations with FIFO queue;
+* sqs-fifo-bulk-sample: demonstrating SQS bulk operations with FIFO queue;
