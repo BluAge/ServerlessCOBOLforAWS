@@ -258,11 +258,11 @@ A confirmation message should appear, like the one below:
 
 Once the queue has been created, we can use it to trigger the execution of the lambda function. Back to the lambda UI, click on the [+ Add trigger] button:
 
-![Add trigger](./images\AWS_Lambda_add_trigger.png)
+![Add trigger](./images/AWS_Lambda_add_trigger.png)
 
 On the trigger page, select SQS in the dropdown list menu, then pick the freshly created queue, and click on the [Add] button:
 
-![Configure trigger](./images\AWS_Lambda_configure_SQS_trigger.png)
+![Configure trigger](./images/AWS_Lambda_configure_SQS_trigger.png)
 
 If the role used to execute the lambda function is missing the ReceiveMessages permission, trying to add the trigger will fail and you will face an error message similar to this one:
 
@@ -392,7 +392,7 @@ The bucket will be created and will appear in the list of buckets:
 
 Now that the bucket has been created, we can use it to trigger the execution of the lambda function. Back to the lambda UI, click on the [+ Add trigger] button and select the S3 menu entry:
 
-![Add S3 trigger](.\images/AWS_Lambda_add_S3_trigger.png)
+![Add S3 trigger](./images/AWS_Lambda_add_S3_trigger.png)
 
 Pick the right bucket in the dropdown menu, and **be sure to select the ```PUT``` Event type as it is the sole supported event type by ServerLess COBOL for AWS for now.**
 
