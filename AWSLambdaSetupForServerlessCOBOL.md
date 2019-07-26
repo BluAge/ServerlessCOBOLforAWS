@@ -410,7 +410,7 @@ Select the dedicated role for the lambda function and click on the [+ Add inline
 
 ![IAM: add inline policy](./images/AWS_IAM_add_inline_policy.png)
 
-Select the JSON tab on the Create policy screen, and copy/paste the policy given in the section [2.2.1](#2.2.1-identify-s3-requirements) above replacing  ```<bucket name>``` with the the bucket name you have chosen (in my case: ```input-lambda-26072019```)
+Select the JSON tab on the Create policy screen, and copy/paste the policy given in the section [2.2.1](#221-identify-s3-requirements) above replacing  ```<bucket name>``` with the the bucket name you have chosen (in my case: ```input-lambda-26072019```)
 
 ![IAM: edit inline policy](./images/AWS_IAM_S3_inline_policy.png)
 
