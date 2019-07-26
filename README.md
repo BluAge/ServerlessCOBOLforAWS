@@ -19,6 +19,7 @@ Our helpdesk team will provide the required resources to get you started compili
 Meanwhile, you can browse the documentation:
 - [COBOL compiler user guide](./VSCodeCompilerForCOBOL-UserGuide.md)
 - [COBOL extensions for AWS - programming guide](./ServerlessCobolAWSExtensions.md)
+- [Setup Lambda functions for Serverless COBOL](./AWSLambdaSetupForServerlessCOBOL.md)
 - [sample COBOL programs](./cobol-samples)
 
 
