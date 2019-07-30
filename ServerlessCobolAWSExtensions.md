@@ -1,6 +1,6 @@
 # BluAge Serverless COBOL Extensions for AWS - Programming Guide
 
-rev. 1.0.4 - (c) BluAge 2019
+rev. 1.0.5 - (c) BluAge 2019
 
 In 2018, [BluAge](https://www.bluage.com) brought to the COBOL community the possiblity to compile their COBOL programs into artefacts that could be deployed and ran on AWS Serverless platform (kubernetes based/lambda), using the native Lambda java8 runtime.
 
@@ -60,6 +60,8 @@ Trying to open the S3 object raised a severe error status code (**20**) that was
 
 java.lang.IllegalStateException: FORCE ABEND ERROR ON S3 OPERATION
 ```
+
+The "FORCEABEND" does not require any AWS permissions to be granted to the role executing the lambda function.
 
 ## The GETENVOP facility extension
 
@@ -121,6 +123,8 @@ Usage sample:
 
 &#x26A0; Prior to using the "GETENVOP" facility, one should read [https://docs.aws.amazon.com/lambda/latest/dg/env_variables.html](https://docs.aws.amazon.com/lambda/latest/dg/env_variables.html), to know the rules and limits for the lambda environment variables.
 
+The "GETENVOP" does not require any AWS permissions to be granted to the role executing the lambda function.
+
 ## The S3 Serverless COBOL extension
 
 ### Supported operations
@@ -147,7 +151,7 @@ Current limitations on supported operations:
 
 To be able to access desired S3 objects, the serverless COBOL lambda function must be granted permission(s) to do so.
 
-Please see [https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html](https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html) for further details.
+Please see [https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html](https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html) for further details and the dedicated [section](#the-s3-operations-aws-permissions-requirements) in this document.
 
 ### API
 
@@ -271,6 +275,25 @@ e.g. : trying to invoke a lambda function that was not granted access to S3
 2019-04-11 16:06:41.587 ERROR 1 --- [ main] c.n.b.g.s.s.o.GenericS3Operations : S3 file [inc-lambda/sample.txt] could not be opened - reason : Access Denied (Service: S3, Status Code: 403, Request ID: E5B9E9F8932B095A)
 2019-04-11 16:06:41.589 INFO 1 --- [ main] c.n.b.s.s.impl.S3sampleProcessImpl : ERROR ON S3 OPERATION: 20
 ```
+
+#### The s3 operations AWS permissions requirements
+
+Below are detailed, on a per operation basis, the AWS permissions requirements, as declared in the JSON AWS policies. The role used to execute the lambda fuction will have to be granted these permissions in order to ensure proper code execution.
+
+Please consult [the official AWS S3 permissions documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/using-with-s3-actions.html); In particular, the details about the scope on which the permissions listed below apply (Object, Bucket, etc...).
+
+| Function | Required Permissions |
+|:---:|:---:|
+| OPEN | ```s3:ListBucket, s3:GetObject```  |
+| READ | - |
+| CLOSE | - |
+| DELETE| ```s3:ListBucket, s3:DeleteObject```  |
+| CREATEB | ```s3:CreateBucket, s3:PutBucketPublicAccessBlock``` |
+| DELETEB | ```s3:ListBucket, s3:DeleteObject, s3:ListBucketVersions, s3:DeleteBucket``` |
+
+In addition to these explicit calls, if the COBOL code is to be triggered by a S3 PUT operation, please consult the [official 'Using AWS Lambda with Amazon S3' documentation](https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html) for directions on configuring the lambda execution role.
+
+
 
 #### The "S3OP" call details
 
@@ -611,7 +634,7 @@ So far, supported DynamoDB operations in the extension are:
 
 To be able to manage resources related to your DynamoDB Streams stream, the serverless COBOL lambda function must be granted permission(s) to do so.
 
-Please see [https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html](https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html) for further details.
+Please see [https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html](https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html) for further details and the dedicated [section](#the-dynamodb-operations-aws-permissions-requirements) in this document.
 
 ### API
 
@@ -710,6 +733,19 @@ Meaning of each result status code:
 * **Unsupported type conversion**: the type defined is not supported.
 * **Invalid region**: an invalid region identifier has been provided. The current DynamoDB operation won't proceed. Fix the typo in the COBOL before trying to run the program again.
 * **I/O error status**: all other errors that could arise during the operation, including issues with AWS access permissions.
+
+#### The DynamoDB operations AWS permissions requirements
+
+Below are detailed, on a per operation basis, the AWS permissions requirements, as declared in the JSON AWS policies. The role used to execute the lambda fuction will have to be granted these permissions in order to ensure proper code execution.
+
+Please consult [the official AWS DynamoDB permissions documentation](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/api-permissions-reference.html).
+
+| Function | Required Permissions |
+|:---:|:---:|
+| STORE | ```dynamodb:PutItem```  |
+| UPDATE | ```dynamodb:GetItem, dynamodb:UpdateItem```|
+| READ | ```dynamodb:GetItem``` |
+| REMOVE| ```dynamodb:GetItem, dynamodb:DeleteItem```  |
 
 #### The "DYNAMODB" call details
 
@@ -900,7 +936,7 @@ In addition, the support for SQS event trigger for AWS Lambda is present. Please
 
 To be able to manage resources related to your SQS queues, the serverless COBOL lambda function must be granted permission(s) to do so.
 
-Please see [https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html](https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html) for further details.
+Please see [https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html](https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html) for further details and the dedicated [section](#the-sqs-operations-aws-permissions-requirements) in this document.
 
 ### API
 
@@ -1112,6 +1148,33 @@ Details on the elementary fields:
 * ```content-based-deduplication```: a flag to indicate, for a FIFO queue, if the deduplication mechanism will use the content of messages (using a SH-256 hash) or if the deduplication information will have to be provided by the client.
 
 Note: only the values different from the default values will be taken into account and passed to the queue creation command. Nevertheless, providing a well formed create queue request area, even with all values set to default, is mandatory to perform a 'CREATEQ' command using the "SQSOP" program.
+
+#### The SQS operations AWS permissions requirements
+
+Below are detailed, on a per operation basis, the AWS permissions requirements, as declared in the JSON AWS policies. The role used to execute the lambda fuction will have to be granted these permissions in order to ensure proper code execution.
+
+Please consult [https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-api-permissions-reference.html](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-api-permissions-reference.html) for the official AWS SQS permissions documentation.
+
+| Function | Required Permissions |
+|:---:|:---:|
+| CREATEQ | ```sqs:CreateQueue```  |
+| PURGEQ | ```sqs:GetQueueUrl, sqs:GetQueueAttributes, sqs:PurgeQueue```|
+| DELETEQ | ```sqs:GetQueueUrl, sqs:GetQueueAttributes, sqs:DeleteQueue```|
+| RCVSMSG| ```sqs:GetQueueUrl, sqs:GetQueueAttributes, sqs:ReceiveMessage```|
+| DELSMSG| ```sqs:GetQueueUrl, sqs:GetQueueAttributes, sqs:DeleteMessage```|
+| CSMSMSG| ```sqs:GetQueueUrl, sqs:GetQueueAttributes, sqs:ReceiveMessage, sqs:DeleteMessage```  |
+| STASMSG| ```sqs:GetQueueUrl, sqs:GetQueueAttributes```  |
+| SNDSMSG| ```sqs:GetQueueUrl, sqs:GetQueueAttributes, sqs:SendMessage```  |
+| PULSMSG| ```sqs:GetQueueUrl, sqs:GetQueueAttributes```  |
+| RCVMMSG| ```sqs:GetQueueUrl, sqs:GetQueueAttributes, sqs:ReceiveMessage```  |
+| SNDMMSG| ```sqs:GetQueueUrl, sqs:GetQueueAttributes, sqs:SendMessage```  |
+
+In addition to these explicit calls, if your COBOL code is intended to be triggered by SQS, the lambda role must be granted the following permissions (according to that [SQS lambda trigger documentation reference](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-lambda-function-trigger.html)):
+
+- ```sqs:ChangeMessageVisibility```
+- ```sqs:DeleteMessage```
+- ```sqs:GetQueueAttributes```
+- ```sqs:ReceiveMessage```
 
 #### The "SQSOP" call details
 
@@ -1962,6 +2025,31 @@ Meaning of each result status code:
 * **Stream not active**: the stream never went active after being created.
 * **Invalid region**: an invalid region identifier has been provided. The current Kinesis operation won't proceed. Fix the typo in the COBOL before trying to run the program again.
 * **I/O error status**: all other errors that could arise during the operation, including issues with AWS access permissions.
+
+#### The Kinesis operations AWS permissions requirements
+
+Below are detailed, on a per operation basis, the AWS permissions requirements, as declared in the JSON AWS policies. The role used to execute the lambda fuction will have to be granted these permissions in order to ensure proper code execution.
+
+Please consult [the official AWS Kinesis Data Firehose permissions documentation](https://docs.aws.amazon.com/firehose/latest/dev/controlling-access.html).
+
+| Function | Required Permissions |
+|:---:|:---:|
+| CREATE | ```kinesis:CreateStream, kinesis:DescribeStream```  |
+| DELETE | ```kinesis:DeleteStream```|
+| PUBLISH| ```kinesis:DescribeStream, kinesis:PutRecord```|
+| READ| ```kinesis:GetShardIterator, kinesis:GetRecords```|
+
+In addition to these explicit calls, and according to this [official 'Using AWS Lambda with Amazon Kinesis' documentation](https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html), if the COBOL code is to be triggered by a Kinesis event, then the following permissions must be granted to the lambda execution role:
+
+- ```kinesis:DescribeStream```
+- ```kinesis:DescribeStreamSummary```
+- ```kinesis:GetRecords```
+- ```kinesis:GetShardIterator```
+- ```kinesis:ListShards```
+- ```kinesis:ListStreams```
+- ```kinesis:SubscribeToShard```
+
+NB: all these permissions are included in the ```AWSLambdaKinesisExecutionRole``` managed policy.
 
 ##### The "KINESIS" call details
 
