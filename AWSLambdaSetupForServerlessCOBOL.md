@@ -628,7 +628,7 @@ Before testing dynamodb-sample, a dynamoDB table has to be created. From the AWS
 
 In the DynamoDB dashboard, select the "Create table" button and create a new DynamoDB table as follows.
 
-![DynamoDB service](./images/AWS_DynamoDB_dashbord.png)
+![DynamoDB service](./images/AWS_DynamoDB_dashboard.png)
 
 ![DynamoDB service](./images/AWS_DynamoDB_createDB.png)
 
