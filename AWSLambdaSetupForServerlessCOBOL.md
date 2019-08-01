@@ -359,7 +359,6 @@ Therefore, the following policy template is enough to cover the required permiss
 
 Both bucket and object operations will be restricted to the dedicated bucket created above.
 
-
 ##### 2.2.2. Creating a new bucket to be used as a trigger source
 
 For the S3 event driven sample, we suggest to create a dedicated S3 private bucket; the bucket **MUST** be located in the same region as the lambda function.
@@ -428,10 +427,211 @@ The new policy can now be seen as attached to the lambda role:
 
 You should now be able to execute the [S3 event driven sample](./cobol-samples/s3-sample-event-driven/S3TSAMPLE.cbl) function.
 
-### 2.3. A Kinesis use case
+#### 2.3. A Kinesis use case
 
-... Coming soon ...
+The following sections describe sample configuration actions to be accomplished for a lambda function that will interact with Kinesis data streams.
 
-### 2.3. A DynamoDB use case
+##### 2.3.1. Identify Kinesis requirements
 
-... Coming soon ...
+Considering the example [kinesis-sample](./cobol-samples/kinesis-sample/Kinesis.cbl), we notice that the following actions are involved during the code execution:
+
+KINESISOP::CREATE
+
+```{.cobol}
+     *     CREATE STREAM
+           Set create-command to True
+           Move "newStream" to stream-name
+           Move 10 to shard-count
+           Call "KINESISOP" Using kinesis-request-area kinesis-op-result
+           Perform Check-kinesis-op-result
+```
+
+KINESISOP::PUBLISH
+
+```{.cobol}
+     *     PUBLISH
+           Set publish-command to True
+           Move "newStream" to stream-name
+           Move "Hello" to kinesis-data
+           Move "first" to partition-key
+           Call "KINESISOP" Using kinesis-request-area kinesis-data
+               kinesis-op-result
+           Perform Check-kinesis-op-result
+```
+
+KINESISOP::READ
+
+```{.cobol}
+     *     READ
+           Set read-command to True
+           Move "first" to partition-key
+           Call "KINESISOP" Using kinesis-request-area kinesis-data
+               kinesis-op-result
+           Perform Check-kinesis-op-result
+           Display kinesis-data
+```
+
+KINESISOP::DELETE
+
+```{.cobol}
+     *     DELETE STREAM
+           Set delete-command to True
+           Move "newStreamToDelete" to stream-name
+           Call "KINESISOP" Using kinesis-request-area kinesis-op-result
+           Perform Check-kinesis-op-result
+```
+
+- KINESISOP::CREATE requires the following permissions on the concerned stream:
+```kinesis:CreateStream, kinesis:DescribeStream```
+- KINESISOP::PUBLISH requires the following permissions:
+```kinesis:DescribeStream, kinesis:PutRecord```
+- KINESISOP::READ requires: ```kinesis:GetShardIterator, kinesis:GetRecords```
+- KINESISOP::DELETE finally requires the following permission:
+```kinesis:DeleteStream```
+
+Therefore, the following policy template is enough to cover the required permissions for that function:
+
+```{.json}
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Kinesis",
+            "Effect": "Allow",
+            "Action": [
+                "kinesis:PutRecord",
+                "kinesis:DeleteStream",
+                "kinesis:CreateStream",
+                "kinesis:GetShardIterator",
+                "kinesis:GetRecords",
+                "kinesis:DescribeStream"
+            ],
+            "Resource": "arn:aws:kinesis:<region>:<aws-account>:stream/*"
+        }
+    ]
+}
+```
+
+Resource informations ```<region>, <aws-account>``` have to match the region you use and your aws account id.
+
+##### 2.3.2. See the sample result on AWS Kinesis management console
+
+From the AWS console, select the Kinesis service in the Services menu:
+
+![Kinesis service](./images/AWS_Kinesis_service.png)
+
+There, click on the [Data Streams] button after having tested the sample and observe that the stream "newStream" has been created according to the legacy sample. The second stream "newStreamToDelete" from the example has been already deleted.
+
+![Kinesis interface](./images/AWS_Kinesis_interface.png)
+
+#### 2.4. A DynamoDB use case
+
+The following sections describe sample configuration actions to be accomplished for a lambda function that will interact with DynamoDB database.
+
+##### 2.4.1. Identify DynamoDB requirements
+
+[DynamoDB sample](./cobol-samples/dynamodb-sample/DynamoDB.cbl) executes the following actions in the COBOL code, requiring to set up some permissions:
+
+DYNAMODB::STORE
+
+```{.cobol}
+     *     STORE
+           Set store-command to True
+           Move "telcoatom" to table-name
+           Set number-key-type to True
+           Set string-record-type to True
+           Move "test" to dynamoDB-data
+           Call "DYNAMODBOP" Using dynamoDB-request-area in-rec-as-str1
+                dynamoDB-data dynamoDB-op-result
+           Perform Checkdynamodb-op-result
+```
+
+DYNAMODB::READ
+
+```{.cobol}
+     *     READ
+           Set read-command to True
+           Set string-record-type to True
+           Call "DYNAMODBOP" Using dynamoDB-request-area in-rec-as-str1
+                dynamoDB-data dynamoDB-op-result
+           Perform Checkdynamodb-op-result
+           Display dynamoDB-data
+```
+
+DYNAMODB::UPDATE
+
+```{.cobol}
+     *     UPDATE
+           Set update-command to True
+           Set string-record-type to True
+           Move "hello" to dynamoDB-data
+           Call "DYNAMODBOP" Using dynamoDB-request-area in-rec-as-str1
+                dynamoDB-data dynamoDB-op-result
+           Perform Checkdynamodb-op-result
+
+DYNAMODB::REMOVE
+
+```{.cobol}
+     *     REMOVE
+           Set remove-command to True
+           Call "DYNAMODBOP" Using dynamoDB-request-area in-rec-as-str2
+                dynamoDB-op-result
+           Perform Checkdynamodb-op-result
+```
+
+- DYNAMODB::STORE requires the following permission on the concerned database:
+```dynamodb:PutItem```
+- DYNAMODB::READ requires the following permission:
+```dynamodb:GetItem```
+- DYNAMODB::UPDATE requires: ```dynamodb:GetItem, dynamodb:UpdateItem```
+- DYNAMODB::REMOVE finally requires the following permissions:
+```dynamodb:GetItem, dynamodb:DeleteItem```
+
+Therefore, the following policy template is enough to cover the required permissions for that function:
+
+```{.json}
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "DDB",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:UpdateItem"
+            ],
+            "Resource": "arn:aws:dynamodb:<region>:<aws-account>:table/<table-name>"
+        }
+    ]
+}
+```
+
+Resource informations ```<region>, <aws-account>, <table-name>``` have to match the region you use, your aws account id and the table name you have created for the sample (see [table creation section below](#242-creating-a-new-dynamodb-table-with-the-aws-console)).
+
+Otherwise, the key necessary to store data in the database is in the linkage section of the COBOL code. Consequently, a test event has to be created to transmit values to the code and execute the operation.
+
+In the Lambda function configuration interface, it is possible to configure test events in the top right corner as seen below :
+
+![DynamoDB lambda interface](./images/AWS_DynamoDB_lambda.png)
+
+Click on "Configure test events" button and create a new one as the example to set up number key type event.
+
+![DynamoDB lambda interface](./images/AWS_DynamoDB_testevent.png)
+
+##### 2.4.2. Creating a new DynamoDB table with the AWS console
+
+Before testing dynamodb-sample, a dynamoDB table has to be created. From the AWS console, select the DynamoDB service in the Services menu:
+
+![DynamoDB service](./images/AWS_DynamoDB_service.png)
+
+In the DynamoDB dashboard, select the "Create table" button and create a new DynamoDB table as follows.
+
+![DynamoDB service](./images/AWS_DynamoDB_dashbord.png)
+
+![DynamoDB service](./images/AWS_DynamoDB_createDB.png)
+
+Thereafter, the sample can be tested and the result can be seen in the dynamoDB console in selecting the "Tables" section. Once the correct table is selected,click on "Items" and any record added by the lambda execution will be shown at for the key specified in the used test event.
+
+![DynamoDB service](./images/AWS_DynamoDB_table.png)
