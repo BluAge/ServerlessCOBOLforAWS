@@ -65,7 +65,13 @@ Configuring the plugin:
 
   ![BluAge COBOL configuration part](./images/Visual_Studio_Code_BACobol_config_done.png)
 
-The location of the server may vary from a customer to another: the BluAge support services will provide a connection url close to your location, to keep network latency as low as possible.
+To keep network latency as low as possible, please pick a compiler server address from the list below, selecting the nearest endpoint to your location:
+
+|Region|Compiler server address|
+|---|---|
+|us-east-1|http://ec2-52-55-164-147.compute-1.amazonaws.com:9191|
+
+&#x26A0; Don't forget to add "/compile" to the compiler server address to get a valid connection url.
 
 Depending on network conditions, and the size of the uploaded COBOL code, you might need to increase the value of the ```Timeout``` setting, on seldom occasions (facing a HTTP 504 response).
 
