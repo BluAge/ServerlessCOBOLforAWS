@@ -23,9 +23,8 @@ This plugin will:
 
   We advise to use the latest VSCode version; this plugin was tested with versions >= 1.30 and **compatibility with older versions is not guaranteed**.
 
-  So far, the plugin is **NOT** available on the VSCode Extensions MARKETPLACE but delivered to selected customers only. To get a copy of the plugin, please apply on this [page](https://www.bluage.com/products/serverless-cobol).
-
-  The plugin will be provided as a vsix file, named **bluage-cobol-X.X.X.vsix** where X.X.X represent the plugin version number.
+  The plugin will is provided as a vsix file, named **bluage-cobol-X.X.X.vsix** where X.X.X represent the plugin version number.
+  The latest available version is located in the [plugin](./plugin) folder of this repository. 
 
   To install it, show the EXTENSIONS view -- ![show the extensions view button](./images/Visual_Studio_Code_extensions_view_show.png) --
 
