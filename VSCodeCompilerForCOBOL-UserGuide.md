@@ -157,7 +157,7 @@ Shoud compilation issues be raised, please check the entries in the PROBLEMS vie
 
 ### 3. File creation
 
-  Create a new file, in that folder, named GETENV.cbl:
+  Create a new file, in that folder, named GETENVS.cbl:
 
 ![creating a new cobol file](./images/VSCODE_create_new_cobol_file.png)
 
