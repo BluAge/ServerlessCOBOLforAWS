@@ -167,7 +167,7 @@ Shoud compilation issues be raised, please check the entries in the PROBLEMS vie
 
 ```{.cobol}
        Identification Division.
-       Program-ID. GETENV.
+       Program-ID. GETENVS.
       ******************************************************************
       *  BLU AGE SERVERLESS COBOL - GETENV EXTENSION - SAMPLE PROGRAM
       *  OBJECT: DEMONSTRATING USAGE OF GETENV FACILITY
@@ -320,7 +320,7 @@ The value to be given is the Program-ID of the COBOL program serving as run unit
 
 ```{.cobol}
        Identification Division.
-       Program-ID. GETENV.
+       Program-ID. GETENVS.
 ```
 
 The name of the environment variable has to be BA_RUN_UNIT_ENTRYPOINT -- and yes, this name is reserved for that purpose --
